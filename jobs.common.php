@@ -19,6 +19,8 @@ $identifiers = array(
 	'default'
 );
 
+handle_magic_quotes();
+
 // Include init script -- this script is expected to take care of security
 // checks and environment initialization for the rest of execution.
 foreach ($identifiers as $identifier) {

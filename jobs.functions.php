@@ -634,3 +634,25 @@ function nsm_hash($conf) {
 	hash_update_file($hash_ctx, 'php://input');
 	return hash_final($hash_ctx);
 }
+
+function handle_magic_quotes() {
+	if (function_exists('get_magic_quotes_gpc')) {
+		if (get_magic_quotes_gpc()) {
+		$process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+			while (list($key, $val) = each($process)) {
+				foreach ($val as $k => $v) {
+				unset($process[$key][$k]);
+					if (is_array($v)) {
+						$process[$key][stripslashes($k)] = $v;
+						$process[] = &$process[$key][stripslashes($k)];
+					}
+					else {
+						$process[$key][stripslashes($k)] = stripslashes($v);
+					}
+				}
+			}	
+			unset($process);
+		}
+	}
+}
+
